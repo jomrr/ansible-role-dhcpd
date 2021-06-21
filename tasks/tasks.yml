@@ -1,0 +1,38 @@
+---
+# role: ansible-role-dhcpd
+# file: tasks/tasks.yml
+
+- name: "Assertions"
+  include_tasks: assert.yml
+  tags:
+    - dhcpd:assert
+
+- name: "Set facts for dhcpd"
+  include_tasks: facts.yml
+  tags:
+    - dhcpd:facts
+
+- name: "Install packages for dhcpd"
+  package:
+    name: "{{ dhcpd_packages }}"
+    state: present
+
+- name: "Configure dhcpd daemon"
+  template:
+    src: "{{ ansible_os_family }}/daemon.j2"
+    dest: "{{ dhcpd_daemon_conf_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart and enable dhcpd
+  when: dhcpd_daemon_conf_path is defined
+    and dhcpd_daemon_conf_path | length > 0
+
+- name: "Configure dhcpd"
+  template:
+    src: dhcpd.conf.j2
+    dest: "{{ dhcpd_conf_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart and enable dhcpd

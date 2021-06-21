@@ -1,0 +1,18 @@
+# {{ template_destpath }}
+# vi: ft=conf
+{{ ansible_managed | comment }}
+
+{% if dhcpd_conf | length > 0 %}{{ dhcpd_conf }}{% endif %}
+
+{% for subnet in dhcpd_subnets %}
+subnet {{ subnet.subnet }} netmask {{ subnet.netmask }} {
+{% if subnet.conf | length > 0 %}{{ subnet.conf | indent(4, True) }}{% endif %}
+}
+{% endfor %}
+
+{% for no_iface in dhcpd_interfaces %}
+{% set iface4 = ansible_facts[no_iface]['ipv4'] | default(ansible_facts['ansible_' + no_iface]['ipv4']) %}
+{% set subnet = iface4['network'] %}
+{% set netmask = iface4['netmask'] %}
+{% if subnet not in dhcpd_defined_subnets %}subnet {{ subnet }} netmask {{ netmask }} { }{% endif %}
+{% endfor %}

@@ -1,0 +1,10 @@
+---
+# role: ansible-role-dhcpd
+# file: tasks/facts.yml
+
+- name: "Assert dhcpd_interfaces exist on target"
+  assert:
+    that: dhcpd_interfaces | intersect(ansible_interfaces) | length == (dhcpd_interfaces | length)
+    fail_msg: "At least one interface from dhcpd_interfaces does not exist on the target system."
+  tags:
+    - dhcpd:assert

@@ -1,0 +1,63 @@
+---
+# role: ansible-role-dhcpd
+# file: vars/Alpine.yml
+
+_dhcpd_packages:
+  Alpine:
+    - dhcp-server-vanilla
+  Archlinux:
+    - dhcp
+  Debian:
+    - procps
+    - isc-dhcp-server
+  RedHat:
+    - dhcp-server
+  Suse:
+    - dhcp-server
+
+# fail here without default on purpose
+dhcpd_packages: >-
+  {{    _dhcpd_packages[ansible_distribution]
+  if    _dhcpd_packages[ansible_distribution] is defined
+  else  _dhcpd_packages[ansible_os_family]
+  if    _dhcpd_packages[ansible_os_family] is defined }}
+
+_dhcpd_conf_path:
+  Alpine: '/etc/dhcp/dhcpd.conf'
+  Archlinux: '/etc/dhcpd.conf'
+  Debian: '/etc/dhcp/dhcpd.conf'
+  RedHat: '/etc/dhcp/dhcpd.conf'
+  Suse: '/etc/dhcpd.conf'
+
+# fail here without default on purpose
+dhcpd_conf_path: >-
+  {{    _dhcpd_conf_path[ansible_distribution]
+  if    _dhcpd_conf_path[ansible_distribution] is defined
+  else  _dhcpd_conf_path[ansible_os_family]
+  if    _dhcpd_conf_path[ansible_os_family] is defined }}
+
+_dhcpd_daemon_conf_path:
+  Alpine: '/etc/conf.d/dhcpd'
+  Debian: '/etc/default/isc-dhcp-server'
+  Suse: '/etc/sysconfig/dhcpd'
+
+# fail here without default on purpose
+dhcpd_daemon_conf_path: >-
+  {{    _dhcpd_daemon_conf_path[ansible_distribution]
+  if    _dhcpd_daemon_conf_path[ansible_distribution] is defined
+  else  _dhcpd_daemon_conf_path[ansible_os_family]
+  if    _dhcpd_daemon_conf_path[ansible_os_family] is defined }}
+
+_dhcpd_service:
+  Alpine: 'dhcpd'
+  Archlinux: 'dhcpd4.service'
+  Debian: 'isc-dhcp-server'
+  RedHat: 'dhcpd.service'
+  Suse: 'dhcpd.service'
+
+# fail here without default on purpose
+dhcpd_service: >-
+  {{    _dhcpd_service[ansible_distribution]
+  if    _dhcpd_service[ansible_distribution] is defined
+  else  _dhcpd_service[ansible_os_family]
+  if    _dhcpd_service[ansible_os_family] is defined }}

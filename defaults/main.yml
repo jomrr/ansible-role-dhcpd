@@ -1,0 +1,43 @@
+---
+# role: ansible-role-dhcpd
+# file: defaults/main.yml
+
+# The role is disabled by default, so you do not get in trouble.
+# Checked in tasks/main.yml which includes tasks/tasks.yml if enabled.
+dhcpd_role_enabled: false
+
+# list of ipv4 interfaces to listen on.
+# this must always contain at least one interface. sort is for idempotence.
+dhcpd_interfaces: "{{ ansible_interfaces | difference(['lo']) | sort }}"
+
+# dhcpd options. put all global configuration here.
+dhcpd_conf: |
+  default-lease-time 600;
+  max-lease-time 7200;
+  ddns-update-style none;
+
+
+# dhcpd subnet declarations. put all subnet specific configuration here.
+dhcpd_subnets: []
+# - subnet: 172.17.0.0
+#   netmask: 255.255.255.0
+#   conf: |
+#     range 172.17.0.32 172.17.0.248;
+
+#     option broadcast-address 172.17.0.255;
+#     option routers 172.17.0.1;
+#     option domain-name-servers 172.17.0.1;
+
+#     # class "pxeclients" {
+#     #     match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
+#     #     next-server 172.17.0.10;
+
+#     #     if exists user-class and option user-class = "iPXE" {
+#     #         filename "http://172.17.0.10/ipxe";
+#     #     }
+#     #     elsif option pxe-system-type = 00:07 {
+#     #         filename "ipxe.efi";
+#     #     } else {
+#     #         filename "undionly.kpxe";
+#     #     }
+#     # }

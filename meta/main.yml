@@ -1,0 +1,39 @@
+---
+# role: ansible-role-dhcpd
+# file: meta/main.yml
+
+galaxy_info:
+  role_name: dhcpd
+  author: jam82
+  description: Ansible role for setting up ISC DHCP Server for IPv4 networks.
+  company: ''
+
+  issue_tracker_url: https://github.com/jam82/ansible-role-dhcpd/issues
+
+  license: MIT
+
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: Alpine
+      versions:
+        - any
+    - name: ArchLinux
+      versions:
+        - any
+    - name: Debian
+      versions:
+        - any
+    - name: EL
+      versions:
+        - any
+    - name: Fedora
+      versions:
+        - any
+    - name: Ubuntu
+      versions:
+        - any
+
+  galaxy_tags: []
+
+dependencies: []

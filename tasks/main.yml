@@ -1,0 +1,10 @@
+---
+# role: ansible-role-dhcpd
+# file: tasks/main.yml
+
+- name: "Check if ansible-role-dhcpd is enabled"
+  include_tasks: tasks.yml
+  when: dhcpd_role_enabled | bool
+  tags:
+    - dhcpd:assert
+    - dhcpd:facts

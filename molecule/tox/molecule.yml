@@ -1,0 +1,35 @@
+---
+# role: ansible-role-dhcpd
+# file: molecule/tox/molecule.yml
+
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: dhcpd-${TOX_ENVNAME:-"default"}
+    image: "${uns:-jam82}/molecule-${img:-debian}:${tag:-latest}"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../resources/playbooks/prepare.yml
+    converge: ../resources/playbooks/converge.yml
+    verify: ../resources/playbooks/verify.yml
+  inventory:
+    group_vars:
+      all:
+        dhcpd_role_enabled: true
+verifier:
+  name: ansible

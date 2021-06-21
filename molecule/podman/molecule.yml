@@ -1,0 +1,38 @@
+---
+# role: ansible-role-dhcpd
+# file: molecule/podman/molecule.yml
+
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+driver:
+  name: podman
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: default-dhcpd
+    image: "${uns:-jam82}/molecule-${img:-debian}:${tag:-latest}"
+    command: ""
+    pre_build_image: true
+    tty: false
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+provisioner:
+  name: ansible
+  log: true
+  playbooks:
+    prepare: ../resources/playbooks/prepare.yml
+    converge: ../resources/playbooks/converge.yml
+    verify: ../resources/playbooks/verify.yml
+  inventory:
+    group_vars:
+      all:
+        dhcpd_role_enabled: true
+verifier:
+  name: ansible

@@ -1,0 +1,100 @@
+---
+# role: ansible-role-dhcpd
+# file: molecule/default/molecule.yml
+
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: alpine-dhcpd
+    image: "jam82/molecule-alpine:latest"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: arch-dhcpd
+    image: "jam82/molecule-archlinux:latest"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: centos-dhcpd
+    image: "jam82/molecule-centos:latest"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: debian-dhcpd
+    image: "jam82/molecule-debian:latest"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: fedora-dhcpd
+    image: "jam82/molecule-fedora:latest"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: opensuse-dhcpd
+    image: "jam82/molecule-opensuse:15"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: tumbleweed-dhcpd
+    image: "jam82/molecule-opensuse:tumbleweed"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: oracle-dhcpd
+    image: "jam82/molecule-oraclelinux:latest"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+  - name: ubuntu-dhcpd
+    image: "jam82/molecule-ubuntu:latest"
+    command: ""
+    pre_build_image: true
+    privileged: true
+    tmpfs:
+      - /tmp
+      - /run
+provisioner:
+  name: ansible
+  log: true
+  playbooks:
+    prepare: ../resources/playbooks/prepare.yml
+    converge: ../resources/playbooks/converge.yml
+    verify: ../resources/playbooks/verify.yml
+  inventory:
+    group_vars:
+      all:
+        dhcpd_role_enabled: true
+verifier:
+  name: ansible

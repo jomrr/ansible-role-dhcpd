@@ -1,0 +1,14 @@
+---
+# role: ansible-role-dhcpd
+# file: tasks.yml
+
+# Playbook to list tasks with `ansible-playbook tasks.yml --list-tasks`.
+# This will get you a nice view on the structure of the role.
+
+- name: Show structure of current role
+  hosts: localhost
+  connection: local
+  vars:
+    dhcpd_role_enabled: true
+  roles:
+    - role: ../ansible-role-dhcpd

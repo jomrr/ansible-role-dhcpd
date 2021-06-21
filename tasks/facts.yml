@@ -1,0 +1,9 @@
+---
+# role: ansible-role-dhcpd
+# file: tasks/facts.yml
+
+- name: "Set fact for empty subnets"
+  set_fact:
+    dhcpd_defined_subnets: "{{ dhcpd_subnets | map(attribute='subnet') | list }}"
+  tags:
+    - dhcpd:facts
