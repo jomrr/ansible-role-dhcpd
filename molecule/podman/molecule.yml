@@ -1,5 +1,5 @@
 ---
-# role: ansible-role-dhcpd
+# role: jomrr.dhcpd
 # file: molecule/podman/molecule.yml
 
 dependency:
@@ -14,7 +14,7 @@ lint: |
   ansible-lint
 platforms:
   - name: default-dhcpd
-    image: "${uns:-jam82}/molecule-${img:-debian}:${tag:-latest}"
+    image: "${uns:-jomrr}/molecule-${img:-debian}:${tag:-latest}"
     command: ""
     pre_build_image: true
     tty: false

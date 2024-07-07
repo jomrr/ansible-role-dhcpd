@@ -11,8 +11,10 @@ subnet {{ subnet.subnet }} netmask {{ subnet.netmask }} {
 {% endfor %}
 
 {% for no_iface in dhcpd_interfaces %}
+{% if ansible_facts[no_iface]['active'] | default(ansible_facts['ansible_' + no_iface]['active'] | bool %}
 {% set iface4 = ansible_facts[no_iface]['ipv4'] | default(ansible_facts['ansible_' + no_iface]['ipv4']) %}
 {% set subnet = iface4['network'] %}
 {% set netmask = iface4['netmask'] %}
 {% if subnet not in dhcpd_defined_subnets %}subnet {{ subnet }} netmask {{ netmask }} { }{% endif %}
+{% endif %}
 {% endfor %}

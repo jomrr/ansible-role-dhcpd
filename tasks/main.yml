@@ -1,10 +1,38 @@
 ---
-# role: ansible-role-dhcpd
+# role: jomrr.dhcpd
 # file: tasks/main.yml
 
-- name: "Check if ansible-role-dhcpd is enabled"
-  include_tasks: tasks.yml
-  when: dhcpd_role_enabled | bool
+- name: "Assertions"
+  ansible.builtin.include_tasks: assert.yml
   tags:
     - dhcpd:assert
+
+- name: "Set facts for dhcpd"
+  ansible.builtin.include_tasks: facts.yml
+  tags:
     - dhcpd:facts
+
+- name: "Install packages for dhcpd"
+  ansible.builtin.package:
+    name: "{{ dhcpd_packages }}"
+    state: present
+
+- name: "Configure dhcpd daemon"
+  ansible.builtin.template:
+    src: "{{ ansible_os_family }}/daemon.j2"
+    dest: "{{ dhcpd_daemon_conf_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "Restart and enable dhcpd"
+  when: dhcpd_daemon_conf_path is defined
+    and dhcpd_daemon_conf_path | length > 0
+
+- name: "Configure dhcpd"
+  ansible.builtin.template:
+    src: dhcpd.conf.j2
+    dest: "{{ dhcpd_conf_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "Restart and enable dhcpd"
