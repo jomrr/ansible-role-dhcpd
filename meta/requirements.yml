@@ -1,5 +1,5 @@
 ---
-# name: jomrr.dhcpd
+# role: jomrr.dhcpd
 # file: meta/requirements.yml
 
 - name: community.general

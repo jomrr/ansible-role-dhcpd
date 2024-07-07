@@ -1,5 +1,5 @@
 ---
-# role: ansible-role-dhcpd
+# role: jomrr.dhcpd
 # file: tasks/facts.yml
 
 - name: "Assert dhcpd_interfaces exist on target"
